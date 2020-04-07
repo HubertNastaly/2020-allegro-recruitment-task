@@ -1,6 +1,6 @@
 import React from 'react';
 import PokemonCard from './PokemonCard';
-import { Grid } from '@material-ui/core';
+import { Grid, LinearProgress } from '@material-ui/core';
 
 
 export default class CardList extends React.Component{
@@ -13,7 +13,7 @@ export default class CardList extends React.Component{
     }
   }
   fetchPokemons(){
-    fetch('https://pokeapi.co/api/v2/pokemon/')
+    fetch('https://pokeapi.co/api/v2/pokemon/?limit=20')
       .then(response => response.json())
       .then(data => {
           this.setState({pokemonsList: data.results, isLoading: false})
@@ -26,18 +26,20 @@ export default class CardList extends React.Component{
     const { isLoading, pokemonsList }  = this.state
     return(
       <div>
-        {isLoading ? "..." :
-          <Grid container spacing={2}>
-            {
-              pokemonsList.map(pokemon => {
-                return(
-                  <Grid item xs={4} key={pokemon.url}>
-                    <PokemonCard pokemonUrl={pokemon.url}></PokemonCard>
-                  </Grid>
-                )
-              })
-            }
-          </Grid>
+        {isLoading ? <LinearProgress></LinearProgress> :
+          <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
+            <Grid container spacing={2}>
+              {
+                pokemonsList.map(pokemon => {
+                  return(
+                    <Grid item xs={4} key={pokemon.url}>
+                      <PokemonCard pokemonUrl={pokemon.url}></PokemonCard>
+                    </Grid>
+                  )
+                })
+              }
+            </Grid>
+          </div>
         }
       </div>
     )
