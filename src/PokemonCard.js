@@ -17,14 +17,20 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     padding: 10,
-    width: 128
+    width: 128,
+    '&:last-child': {
+      paddingBottom: 10,
+    }
   },
   lastRow:{
     flexGrow: 1,
-    padding: 0
+    padding: 0,
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end'
   },
   media:{
-    flex: '1'
+    flex: 1
   },
   name:{
     fontWeight: 'bold'
@@ -36,13 +42,14 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     height: 144,
-  }
+  },
 }
 
 // const IconType = (props) => {
 
 // }
 
+//add keys!
 const Types = {
   "normal": <FaFrog title="Normal"></FaFrog>,
   "fire": <IoIosFlame title="Fire"></IoIosFlame>,

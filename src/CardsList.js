@@ -1,13 +1,14 @@
 import React from 'react';
 import PokemonCard from './PokemonCard';
 import { Grid, LinearProgress } from '@material-ui/core';
+import withWidth from '@material-ui/core/withWidth';
 
 
-export default class CardList extends React.Component{
+class CardList extends React.Component{
   constructor(props){
     super(props)
-
     this.state = {
+      width: props.width,
       pokemonsList: [],
       isLoading: true
     }
@@ -24,6 +25,9 @@ export default class CardList extends React.Component{
   }
   render(){
     const { isLoading, pokemonsList }  = this.state
+    const device = this.state.width > 600 ? this.state.width > 1280 ? 3 : 2 : 1
+    console.log(device)
+    const itemWidth = 12 / device
     return(
       <div>
         {isLoading ? <LinearProgress></LinearProgress> :
@@ -32,7 +36,7 @@ export default class CardList extends React.Component{
               {
                 pokemonsList.map(pokemon => {
                   return(
-                    <Grid item xs={4} key={pokemon.url}>
+                    <Grid item xs={itemWidth} key={pokemon.url}>
                       <PokemonCard pokemonUrl={pokemon.url}></PokemonCard>
                     </Grid>
                   )
@@ -45,3 +49,5 @@ export default class CardList extends React.Component{
     )
   }
 }
+
+export default withWidth()(CardList);

@@ -1,11 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import CardsList from './CardsList';
+import Header from './Header';
 
 function App() {
   return (
-    <CardsList></CardsList>
+    <div>
+      <Header></Header>
+      <CardsList></CardsList>
+    </div>
   );
 }
 
