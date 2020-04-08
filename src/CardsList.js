@@ -1,5 +1,6 @@
 import React from 'react';
 import PokemonCard from './PokemonCard';
+import FiltersPaper from './FiltersPaper';
 import { Grid, LinearProgress } from '@material-ui/core';
 import withWidth from '@material-ui/core/withWidth';
 import Pagination from '@material-ui/lab/Pagination';
@@ -7,18 +8,18 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
+  pagination:{
+    marginTop: 30,
+    marginBottom: 30
+  },
   root:{
     width: '90%',
     marginLeft: 'auto',
     marginRight: 'auto',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
-  pagination:{
-    marginTop: 30,
-    marginBottom: 30
-  }
 }
 
 class CardList extends React.Component{
@@ -30,6 +31,7 @@ class CardList extends React.Component{
       pages: 0,
       width: props.width,
       pokemonsList: [],
+      selectedTypes: [],
       isLoading: true
     }
     this.fetchPokemons = this.fetchPokemons.bind(this)
@@ -53,6 +55,11 @@ class CardList extends React.Component{
             })
       })
   }
+  updateTypes(types){
+    this.setState({
+      selectedTypes: types
+    })
+  }
   handlePageClick(event, value){
     event.preventDefault()
     console.log(value)
@@ -70,6 +77,7 @@ class CardList extends React.Component{
       <div>
         {isLoading ? <LinearProgress></LinearProgress> :
           <div className={this.classes.root}>
+            <FiltersPaper></FiltersPaper>
             <Grid container spacing={2}>
               {
                 pokemonsList.map(pokemon => {

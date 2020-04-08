@@ -15,7 +15,7 @@ const styles = {
     width: '100%',
     marginBottom: 30,
 
-    backgroundImage: 'url("http://images4.fanpop.com/image/photos/17900000/Serebii-net-s-Official-Advent-Wallpapers-pokemon-17922292-1024-768.jpg")',
+    backgroundImage: 'url("https://i.pinimg.com/originals/e9/bd/02/e9bd02b31ed412281e60d344a0a21343.jpg")',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     
@@ -28,8 +28,7 @@ const styles = {
       height: 60,
       display: 'block',
       background: 'rgba(0, 0, 0, 0.5)',
-      zIndex: 3
-      //position: 'absolute',
+      position: 'absolute'
     }
   },
   title:{
