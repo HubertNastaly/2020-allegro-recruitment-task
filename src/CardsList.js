@@ -26,31 +26,46 @@ class CardList extends React.Component{
     super(props)
     this.classes = props.classes
     this.state = {
-      page: 1,
-      pages: null,
+      currentPage: 1,
+      pages: 0,
       width: props.width,
       pokemonsList: [],
       isLoading: true
     }
+    this.fetchPokemons = this.fetchPokemons.bind(this)
+    this.handlePageClick = this.handlePageClick.bind(this)
   }
-  fetchPokemons(){
+  componentDidMount(){
+    this.fetchPokemons(this.state.currentPage);
+  }
+  fetchPokemons(page){
     const limit = 20
-    fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}`)
+    const offset = (page - 1) * limit
+    fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`)
       .then(response => response.json())
       .then(data => {
           const pages = Math.ceil(data.count / limit)
           this.setState({
+            currentPage: page,
             pages: pages,
             pokemonsList: data.results, 
             isLoading: false
             })
       })
   }
-  componentDidMount(){
-    this.fetchPokemons();
+  handlePageClick(event, value){
+    event.preventDefault()
+    console.log(value)
+    if(value === this.state.currentPage)
+    {
+      return
+    }
+    this.setState({
+      isLoading: true
+    }, this.fetchPokemons(value))
   }
   render(){
-    const { isLoading, pokemonsList, pages, page }  = this.state
+    const { isLoading, pokemonsList, pages, currentPage }  = this.state
     return(
       <div>
         {isLoading ? <LinearProgress></LinearProgress> :
@@ -68,8 +83,10 @@ class CardList extends React.Component{
             </Grid>
             <Pagination className={this.classes.pagination} 
                         count={pages} 
-                        page={page}
-                        siblingCount={0}></Pagination>
+                        page={currentPage}
+                        siblingCount={1}
+                        onChange={this.handlePageClick}>
+            </Pagination>
           </div>
         }
       </div>

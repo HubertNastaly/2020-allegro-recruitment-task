@@ -55,7 +55,7 @@ const Types = {
   "fire": <IoIosFlame title="Fire"></IoIosFlame>,
   "fighting": <FaFistRaised title="Fighting"></FaFistRaised>,
   "flying": <FaFeather title="Flying"></FaFeather>,
-  "posion": <IoIosFlask title="Poison"></IoIosFlask>,
+  "poison": <IoIosFlask title="Poison"></IoIosFlask>,
   "gorund": <IoIosPaw title="Ground"></IoIosPaw>,
   "rock": <FaMountain title="Rock"></FaMountain>,
   "bug": <IoIosBug title="Bug"></IoIosBug>,
@@ -102,11 +102,15 @@ class PokemonCard extends React.Component{
           weight: data.weight,
           baseExperience: data.base_experience,
           types: typesToSet,
-          isLoading: false
+          isLoading: false,
+          raised: false
         })
       })
       .then(this.setState({isLoading: false}))
   }
+
+  onMouseOver = () => this.setState({ raised: true});
+  onMouseOut = () => this.setState({ raised: false});
 
   componentDidMount(){
     this.fetchPokemonData()
@@ -117,7 +121,10 @@ class PokemonCard extends React.Component{
     return(
       <div>
         {isLoading ? <LinearProgress></LinearProgress> :
-        <Card className={this.classes.root}>
+        <Card className={this.classes.root}
+              onMouseOver={this.onMouseOver}
+              onMouseOut={this.onMouseOut}
+              raised={this.state.raised}>
           <CardMedia className={this.classes.media} image={imageUrl}></CardMedia>
           <CardContent className={this.classes.cardColumn}>
             <Typography className={this.classes.name}>{name}</Typography>
