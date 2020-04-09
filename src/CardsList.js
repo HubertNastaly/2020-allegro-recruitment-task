@@ -18,7 +18,7 @@ const styles = {
     marginRight: 'auto',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-start'
+    alignItems: 'center'
   },
 }
 
@@ -26,16 +26,19 @@ class CardList extends React.Component{
   constructor(props){
     super(props)
     this.classes = props.classes
+    this.pokemonTypes = []
+    this.pokemonDetails = []
     this.state = {
+      selectedTypes: new Set(),
       currentPage: 1,
       pages: 0,
       width: props.width,
-      pokemonsList: [],
-      selectedTypes: [],
       isLoading: true
     }
     this.fetchPokemons = this.fetchPokemons.bind(this)
+    this.fetchPokemonDetails = this.fetchPokemonDetails.bind(this)
     this.handlePageClick = this.handlePageClick.bind(this)
+    this.updateTypes = this.updateTypes.bind(this)
   }
   componentDidMount(){
     this.fetchPokemons(this.state.currentPage);
@@ -47,22 +50,80 @@ class CardList extends React.Component{
       .then(response => response.json())
       .then(data => {
           const pages = Math.ceil(data.count / limit)
-          this.setState({
-            currentPage: page,
-            pages: pages,
-            pokemonsList: data.results, 
-            isLoading: false
+          Promise.all(data.results.map(pokemon => this.fetchPokemonDetails(pokemon.name, pokemon.url)))
+            .then(() => {
+              this.setState({
+              pages: pages,
+              currentPage: page,
+              isLoading: false
+              })
             })
       })
   }
-  updateTypes(types){
-    this.setState({
-      selectedTypes: types
-    })
+  fetchPokemonDetails(pokemonName,pokemonUrl){
+    return fetch(pokemonUrl)
+      .then(response => response.json())
+      .then(data => {
+        const name = data.name.charAt(0).toUpperCase() + data.name.slice(1)
+        const types = data.types.map(elem => elem.type.name)
+        const parameters = {
+          name: name,
+          types: types,
+          height: data.height,
+          weight: data.weight,
+          baseExperience: data.base_experience
+        }
+        this.pokemonDetails.push(parameters)
+      })
+  }
+  createCard(parameters){
+    const imageUrl = "https://www.focus.pl/uploads/media/default/0001/30/b93bfc47ea2848d3cbdc6777a19de3116cf91e43.jpeg"
+    return(
+      <PokemonCard  name={parameters.name} 
+                    types={parameters.types} 
+                    height={parameters.height} 
+                    weight={parameters.weight} 
+                    baseExperience={parameters.baseExperience} 
+                    imageUrl={imageUrl}></PokemonCard>
+    )
+  }
+  displayFilteredPokemons(){
+    return(
+      <Grid container spacing={2}>{
+        this.pokemonDetails.map(pokemon => {
+          return(((this.state.selectedTypes.size === 0) || (pokemon.types.filter(type => this.state.selectedTypes.has(type)).length > 0)) &&  
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={pokemon.name}>
+              {this.createCard(pokemon)}
+            </Grid>)
+        })
+      }
+      </Grid>
+    )
+  }
+  updateTypes(event){
+    const checked = event.target.checked
+    const name = event.target.name
+    if(checked){
+      this.setState(prevState => {
+        const newSet = new Set(prevState.selectedTypes)
+        newSet.add(name)
+        return({
+          selectedTypes: newSet
+        })
+      })
+    }
+    else{
+      this.setState(prevState => {
+        const newSet = new Set(prevState.selectedTypes)
+        newSet.delete(name)
+        return({
+          selectedTypes: newSet
+        })
+      })
+    }
   }
   handlePageClick(event, value){
     event.preventDefault()
-    console.log(value)
     if(value === this.state.currentPage)
     {
       return
@@ -72,23 +133,14 @@ class CardList extends React.Component{
     }, this.fetchPokemons(value))
   }
   render(){
-    const { isLoading, pokemonsList, pages, currentPage }  = this.state
+    const { isLoading, pages, currentPage } = this.state
+    console.log(this.state.selectedTypes)
     return(
       <div>
         {isLoading ? <LinearProgress></LinearProgress> :
           <div className={this.classes.root}>
-            <FiltersPaper></FiltersPaper>
-            <Grid container spacing={2}>
-              {
-                pokemonsList.map(pokemon => {
-                  return(
-                    <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={pokemon.url}>
-                      <PokemonCard pokemonUrl={pokemon.url}></PokemonCard>
-                    </Grid>
-                  )
-                })
-              }
-            </Grid>
+            <FiltersPaper updateTypes={this.updateTypes}></FiltersPaper>
+            {this.displayFilteredPokemons()}
             <Pagination className={this.classes.pagination} 
                         count={pages} 
                         page={currentPage}

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Checkbox, FormGroup, FormControlLabel, FormControl } from '@material-ui/core';
+import { Paper, Checkbox, FormGroup, FormControlLabel, FormControl, Typography } from '@material-ui/core';
 import { Types } from './types'
 
 const styles = {
@@ -9,7 +9,10 @@ const styles = {
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+  },
+  label:{
+    fontSize: 10
   },
   root:{
     marginBottom: 30,
@@ -24,10 +27,10 @@ class FiltersPaper extends React.Component{
     this.allTypes = Object.keys(Types)
   }
   createLabel(type){
-    type = type[0].toUpperCase() + type.substring(1)
+    const upperCaseType = type[0].toUpperCase() + type.substring(1)
     return (<FormControlLabel
-      control={<Checkbox checked={false} name={type}></Checkbox>}
-      label={type}/>)
+              control={<Checkbox name={type} onChange={this.props.updateTypes}></Checkbox>}
+              label={<Typography className={this.classes.label}>{upperCaseType}</Typography>}/>)
   }
   render(){
     return(

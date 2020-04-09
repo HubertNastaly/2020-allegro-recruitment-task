@@ -52,10 +52,17 @@ class PokemonCard extends React.Component{
   constructor(props){
     super(props)
     this.classes = props.classes
-    this.pokemonUrl = props.pokemonUrl
+    // this.pokemonUrl = props.pokemonUrl
+    this.name = props.name
+    this.height = props.height
+    this.weight = props.weight
+    this.types = props.types
+    this.baseExperience = props.baseExperience
+    this.imageUrl = props.imageUrl
     
     this.state = {
-      isLoading: true,
+      raised: false,
+      //isLoading: true,
       name: null,
       height: null,
       weight: null,
@@ -65,37 +72,36 @@ class PokemonCard extends React.Component{
     }
   }
 
-  fetchPokemonData(){
-    fetch(this.pokemonUrl)
-      .then(response => response.json())
-      .then(data => {
-        const nameToSet = data.name.charAt(0).toUpperCase() + data.name.slice(1)
-        const typesToSet = data.types.map(elem => elem.type.name)
-        this.setState({
-          name: nameToSet,
-          height: data.height,
-          weight: data.weight,
-          baseExperience: data.base_experience,
-          types: typesToSet,
-          isLoading: false,
-          raised: false
-        })
-      })
-      .then(this.setState({isLoading: false}))
-  }
+  // fetchPokemonData(){
+  //   fetch(this.pokemonUrl)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       const nameToSet = data.name.charAt(0).toUpperCase() + data.name.slice(1)
+  //       const typesToSet = data.types.map(elem => elem.type.name)
+  //       this.setState({
+  //         name: nameToSet,
+  //         height: data.height,
+  //         weight: data.weight,
+  //         baseExperience: data.base_experience,
+  //         types: typesToSet,
+  //         isLoading: false,
+  //         raised: false
+  //       })
+  //     })
+  // }
 
   onMouseOver = () => this.setState({ raised: true});
   onMouseOut = () => this.setState({ raised: false});
 
   componentDidMount(){
-    this.fetchPokemonData()
+    //this.fetchPokemonData()
   }
 
   render(){
-    const { isLoading, name, height, weight, imageUrl, baseExperience, types } = this.state
+    //const { isLoading, name, height, weight, imageUrl, baseExperience, types } = this.state
+    const { name, height, weight, imageUrl, baseExperience, types } = this
     return(
       <div>
-        {isLoading ? <LinearProgress></LinearProgress> :
         <Card className={this.classes.root}
               onMouseOver={this.onMouseOver}
               onMouseOut={this.onMouseOut}
@@ -112,7 +118,7 @@ class PokemonCard extends React.Component{
               })}
             </div>
           </CardContent>
-        </Card>}
+        </Card>
       </div>
     )
   }
