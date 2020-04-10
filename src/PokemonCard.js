@@ -4,8 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import {  Card, 
           CardContent, 
           CardMedia, 
-          Typography,
-          LinearProgress } from '@material-ui/core';
+          Typography } from '@material-ui/core';
 import { Types } from './types'
 
 const styles = {
@@ -41,18 +40,10 @@ const styles = {
   },
 }
 
-// const IconType = (props) => {
-
-// }
-
-//add keys!
-
-
 class PokemonCard extends React.Component{
   constructor(props){
     super(props)
     this.classes = props.classes
-    // this.pokemonUrl = props.pokemonUrl
     this.name = props.name
     this.height = props.height
     this.weight = props.weight
@@ -62,7 +53,6 @@ class PokemonCard extends React.Component{
     
     this.state = {
       raised: false,
-      //isLoading: true,
       name: null,
       height: null,
       weight: null,
@@ -72,33 +62,10 @@ class PokemonCard extends React.Component{
     }
   }
 
-  // fetchPokemonData(){
-  //   fetch(this.pokemonUrl)
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       const nameToSet = data.name.charAt(0).toUpperCase() + data.name.slice(1)
-  //       const typesToSet = data.types.map(elem => elem.type.name)
-  //       this.setState({
-  //         name: nameToSet,
-  //         height: data.height,
-  //         weight: data.weight,
-  //         baseExperience: data.base_experience,
-  //         types: typesToSet,
-  //         isLoading: false,
-  //         raised: false
-  //       })
-  //     })
-  // }
-
   onMouseOver = () => this.setState({ raised: true});
   onMouseOut = () => this.setState({ raised: false});
 
-  componentDidMount(){
-    //this.fetchPokemonData()
-  }
-
   render(){
-    //const { isLoading, name, height, weight, imageUrl, baseExperience, types } = this.state
     const { name, height, weight, imageUrl, baseExperience, types } = this
     return(
       <div>

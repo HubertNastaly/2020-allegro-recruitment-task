@@ -1,7 +1,7 @@
 import React from 'react';
 import PokemonCard from './PokemonCard';
 import FiltersPaper from './FiltersPaper';
-import { Grid, LinearProgress } from '@material-ui/core';
+import { Grid, LinearProgress, Button } from '@material-ui/core';
 import withWidth from '@material-ui/core/withWidth';
 import Pagination from '@material-ui/lab/Pagination';
 import PropTypes from 'prop-types';
@@ -26,7 +26,6 @@ class CardList extends React.Component{
   constructor(props){
     super(props)
     this.classes = props.classes
-    this.pokemonTypes = []
     this.pokemonDetails = []
     this.state = {
       selectedTypes: new Set(),
@@ -46,6 +45,7 @@ class CardList extends React.Component{
   fetchPokemons(page){
     const limit = 20
     const offset = (page - 1) * limit
+    this.pokemonDetails = []
     fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`)
       .then(response => response.json())
       .then(data => {
@@ -129,6 +129,7 @@ class CardList extends React.Component{
       return
     }
     this.setState({
+      selectedTypes: new Set(),
       isLoading: true
     }, this.fetchPokemons(value))
   }
@@ -145,6 +146,8 @@ class CardList extends React.Component{
                         count={pages} 
                         page={currentPage}
                         siblingCount={1}
+                        hideNextButton={true}
+                        hidePrevButton={true}
                         onChange={this.handlePageClick}>
             </Pagination>
           </div>

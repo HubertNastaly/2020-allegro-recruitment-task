@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Checkbox, FormGroup, FormControlLabel, FormControl, Typography } from '@material-ui/core';
+import {  Paper, Checkbox, FormGroup, FormControlLabel, FormControl, Typography, Button, Grid } from '@material-ui/core';
 import { Types } from './types'
+import { BrowserView, MobileView } from 'react-device-detect'
 
 const styles = {
   form:{
@@ -16,7 +17,11 @@ const styles = {
   },
   root:{
     marginBottom: 30,
-    width: '100%'
+    width: '100%',
+  },
+  mobile:{
+    boxSizing: 'border-box',
+    padding: 10
   }
 }
 
@@ -25,39 +30,44 @@ class FiltersPaper extends React.Component{
     super(props)
     this.classes = props.classes
     this.allTypes = Object.keys(Types)
+    this.state = {
+      panelOpened: false
+    }
+    this.tooglePanel = this.tooglePanel.bind(this)
+  }
+  tooglePanel(){
+    const opened = Boolean(this.state.panelOpened ^ 1)
+    this.setState({
+      panelOpened: opened
+    })
   }
   createLabel(type){
     const upperCaseType = type[0].toUpperCase() + type.substring(1)
     return (<FormControlLabel
+              key = {type}
               control={<Checkbox name={type} onChange={this.props.updateTypes}></Checkbox>}
               label={<Typography className={this.classes.label}>{upperCaseType}</Typography>}/>)
   }
   render(){
     return(
-      <Paper className={this.classes.root}>
-        <FormControl component="fieldset" className={this.classes.form}>
-          <FormGroup>{
-            this.allTypes.slice(0,4).map(type => this.createLabel(type))
-          }
-          </FormGroup>
-          <FormGroup>{
-            this.allTypes.slice(4,8).map(type => this.createLabel(type))
-          }
-          </FormGroup>
-          <FormGroup>{
-            this.allTypes.slice(8,12).map(type => this.createLabel(type))
-          }
-          </FormGroup>
-          <FormGroup>{
-            this.allTypes.slice(12,16).map(type => this.createLabel(type))
-          }
-          </FormGroup>
-          <FormGroup>{
-            this.allTypes.slice(16,20).map(type => this.createLabel(type))
-          }
-          </FormGroup>
-        </FormControl>
-      </Paper>
+      <div className={this.classes.root}>
+        <Button variant="contained" onClick={this.tooglePanel}>
+          Types
+        </Button>
+        { this.state.panelOpened &&
+        <Paper className={this.classes.mobile} display="none">
+            <Grid container>{
+              this.allTypes.map(type => 
+                <Grid item xs={6} sm={3} md={2} key={type}>{
+                  this.createLabel(type)
+                }
+                </Grid>
+              )
+            }    
+            </Grid>
+        </Paper>
+        }      
+      </div>
     )
   }
 }
