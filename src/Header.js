@@ -15,26 +15,20 @@ const styles = {
     width: '100%',
     marginBottom: 30,
 
-    backgroundImage: 'url("https://i.pinimg.com/originals/e9/bd/02/e9bd02b31ed412281e60d344a0a21343.jpg")',
+    backgroundImage: 'url("https://images.alphacoders.com/761/761506.jpg")',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
     
     '-webkit-box-shadow': '0px 0px 59px -38px rgba(0,0,0,0.75)',
     '-moz-box-shadow': '0px 0px 59px -38px rgba(0,0,0,0.75)',
     'box-shadow': '0px 0px 59px -38px rgba(0,0,0,0.75)',
-
-    '&::before': {
-      width: 30,
-      height: 60,
-      display: 'block',
-      background: 'rgba(0, 0, 0, 0.5)',
-      position: 'absolute'
-    }
   },
   title:{
     color: 'white',
     fontSize: 36,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    textShadow: '0px 0px 7px black'
   }
 }
 

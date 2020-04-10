@@ -77,7 +77,7 @@ class CardList extends React.Component{
       })
   }
   createCard(parameters){
-    const imageUrl = "https://www.focus.pl/uploads/media/default/0001/30/b93bfc47ea2848d3cbdc6777a19de3116cf91e43.jpeg"
+    const imageUrl = "https://cdn.images.express.co.uk/img/dynamic/143/590x/Pokemon-Sword-and-Shield-celebration-1230942.webp?r=1579540256528"
     return(
       <PokemonCard  name={parameters.name} 
                     types={parameters.types} 
