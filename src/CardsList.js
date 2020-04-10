@@ -129,7 +129,6 @@ class CardList extends React.Component{
       return
     }
     this.setState({
-      selectedTypes: new Set(),
       isLoading: true
     }, this.fetchPokemons(value))
   }

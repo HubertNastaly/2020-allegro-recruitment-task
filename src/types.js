@@ -12,7 +12,7 @@ export const Types = {
   "fighting": <FaFistRaised title="Fighting" key="fighting"></FaFistRaised>,
   "flying": <FaFeather title="Flying" key="flying"></FaFeather>,
   "poison": <IoIosFlask title="Poison" key="poison"></IoIosFlask>,
-  "gorund": <IoIosPaw title="Ground" key="gorund"></IoIosPaw>,
+  "ground": <IoIosPaw title="Ground" key="ground"></IoIosPaw>,
   "rock": <FaMountain title="Rock" key="rock"></FaMountain>,
   "bug": <IoIosBug title="Bug" key="bug"></IoIosBug>,
   "ghost": <FaGhost title="Ghost" key="ghost"></FaGhost>,

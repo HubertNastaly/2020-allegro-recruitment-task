@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import {  Paper, Checkbox, FormGroup, FormControlLabel, FormControl, Typography, Button, Grid } from '@material-ui/core';
+import {  Paper, Checkbox, FormControlLabel, Typography, Button, Grid } from '@material-ui/core';
 import { Types } from './types'
-import { BrowserView, MobileView } from 'react-device-detect'
 
 const styles = {
   form:{
@@ -19,9 +18,9 @@ const styles = {
     marginBottom: 30,
     width: '100%',
   },
-  mobile:{
+  paper:{
     boxSizing: 'border-box',
-    padding: 10
+    padding: 15
   }
 }
 
@@ -45,7 +44,7 @@ class FiltersPaper extends React.Component{
     const upperCaseType = type[0].toUpperCase() + type.substring(1)
     return (<FormControlLabel
               key = {type}
-              control={<Checkbox name={type} onChange={this.props.updateTypes}></Checkbox>}
+              control={<Checkbox onChange={this.props.updateTypes} name={type}></Checkbox>}
               label={<Typography className={this.classes.label}>{upperCaseType}</Typography>}/>)
   }
   render(){
@@ -55,15 +54,15 @@ class FiltersPaper extends React.Component{
           Types
         </Button>
         { this.state.panelOpened &&
-        <Paper className={this.classes.mobile} display="none">
+        <Paper className={this.classes.paper} display="none">
             <Grid container>{
-              this.allTypes.map(type => 
-                <Grid item xs={6} sm={3} md={2} key={type}>{
-                  this.createLabel(type)
-                }
-                </Grid>
-              )
-            }    
+                this.allTypes.map(type => 
+                  <Grid item xs={6} sm={3} md={2} key={type}>{
+                    this.createLabel(type)
+                  }
+                  </Grid>
+                )
+              }    
             </Grid>
         </Paper>
         }      
