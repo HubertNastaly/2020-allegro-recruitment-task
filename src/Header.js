@@ -36,7 +36,7 @@ const Header = (props) => {
   const classes = props.classes
   return(
       <div className={classes.root}>
-        <Typography className={classes.title}>Pockedeck</Typography>
+        <Typography className={classes.title}>Pokedex</Typography>
       </div>
   )
 }

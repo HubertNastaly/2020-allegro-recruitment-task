@@ -103,29 +103,20 @@ class CardList extends React.Component{
   updateTypes(event){
     const checked = event.target.checked
     const name = event.target.name
+    const newSet = this.state.selectedTypes
     if(checked){
-      this.setState(prevState => {
-        const newSet = new Set(prevState.selectedTypes)
-        newSet.add(name)
-        return({
-          selectedTypes: newSet
-        })
-      })
+      newSet.add(name)
     }
     else{
-      this.setState(prevState => {
-        const newSet = new Set(prevState.selectedTypes)
-        newSet.delete(name)
-        return({
-          selectedTypes: newSet
-        })
-      })
+      newSet.delete(name)
     }
+    this.setState({
+      selectedTypes: newSet
+    })
   }
   handlePageClick(event, value){
     event.preventDefault()
-    if(value === this.state.currentPage)
-    {
+    if(value === this.state.currentPage){
       return
     }
     this.setState({
