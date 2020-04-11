@@ -1,7 +1,7 @@
 import React from 'react';
 import PokemonCard from './PokemonCard';
 import FiltersPaper from './FiltersPaper';
-import { Grid, LinearProgress, Button } from '@material-ui/core';
+import { Grid, LinearProgress } from '@material-ui/core';
 import withWidth from '@material-ui/core/withWidth';
 import Pagination from '@material-ui/lab/Pagination';
 import PropTypes from 'prop-types';

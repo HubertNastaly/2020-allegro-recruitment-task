@@ -49,13 +49,7 @@ class PokemonCard extends React.Component{
     this.imageUrl = props.imageUrl
     
     this.state = {
-      raised: false,
-      name: null,
-      height: null,
-      weight: null,
-      baseExperience: null,
-      imageUrl: "https://www.focus.pl/uploads/media/default/0001/30/b93bfc47ea2848d3cbdc6777a19de3116cf91e43.jpeg",
-      types: []
+      raised: false
     }
   }
 

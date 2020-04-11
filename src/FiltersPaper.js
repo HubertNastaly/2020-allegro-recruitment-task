@@ -41,7 +41,7 @@ class FiltersPaper extends React.Component{
     })
   }
   createLabel(type){
-    const upperCaseType = type[0].toUpperCase() + type.substring(1)
+    const upperCaseType = type.charAt(0).toUpperCase() + type.substring(1)
     return (<FormControlLabel
               key = {type}
               control={<Checkbox onChange={this.props.updateTypes} name={type}></Checkbox>}
