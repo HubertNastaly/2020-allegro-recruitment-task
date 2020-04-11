@@ -1,7 +1,7 @@
 import React from 'react';
 import PokemonCard from './PokemonCard';
 import FiltersPaper from './FiltersPaper';
-import { Grid, LinearProgress } from '@material-ui/core';
+import { Grid, LinearProgress, Typography } from '@material-ui/core';
 import withWidth from '@material-ui/core/withWidth';
 import Pagination from '@material-ui/lab/Pagination';
 import PropTypes from 'prop-types';
@@ -32,7 +32,8 @@ class CardList extends React.Component{
       currentPage: 1,
       pages: 0,
       width: props.width,
-      isLoading: true
+      isLoading: true,
+      error: false
     }
     this.fetchPokemons = this.fetchPokemons.bind(this)
     this.fetchPokemonDetails = this.fetchPokemonDetails.bind(this)
@@ -47,7 +48,13 @@ class CardList extends React.Component{
     const offset = (page - 1) * limit
     this.pokemonDetails = []
     fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`)
-      .then(response => response.json())
+      .then(response => {
+        if(response.ok){
+          return response.json()
+        } else {
+          throw new Error("Could not fetch pokemons")
+        }
+      })
       .then(data => {
           const pages = Math.ceil(data.count / limit)
           Promise.all(data.results.map(pokemon => this.fetchPokemonDetails(pokemon.name, pokemon.url)))
@@ -59,10 +66,23 @@ class CardList extends React.Component{
               })
             })
       })
+      .catch(error => {
+        console.dir("Error: ", error)
+        this.setState({
+          isLoading: false,
+          error: true
+        })
+      });
   }
   fetchPokemonDetails(pokemonName,pokemonUrl){
     return fetch(pokemonUrl)
-      .then(response => response.json())
+      .then(response => {
+        if(response.ok){
+          return response.json()
+        } else {
+          throw new Error(`Could not fetch pokemon ${pokemonName}`)
+        }
+      })
       .then(data => {
         const name = data.name.charAt(0).toUpperCase() + data.name.slice(1)
         const types = data.types.map(elem => elem.type.name)
@@ -75,6 +95,9 @@ class CardList extends React.Component{
         }
         this.pokemonDetails.push(parameters)
       })
+      .catch(error => {
+        console.dir("Error: ", error)
+      });
   }
   createCard(parameters){
     const imageUrl = "https://cdn.images.express.co.uk/img/dynamic/143/590x/Pokemon-Sword-and-Shield-celebration-1230942.webp?r=1579540256528"
@@ -124,11 +147,11 @@ class CardList extends React.Component{
     }, this.fetchPokemons(value))
   }
   render(){
-    const { isLoading, pages, currentPage } = this.state
-    console.log(this.state.selectedTypes)
+    const { isLoading, pages, currentPage, error } = this.state
     return(
       <div>
-        {isLoading ? <LinearProgress></LinearProgress> :
+        { error ? <Typography>Connection error</Typography> :
+          isLoading ? <LinearProgress></LinearProgress> : 
           <div className={this.classes.root}>
             <FiltersPaper updateTypes={this.updateTypes}></FiltersPaper>
             {this.displayFilteredPokemons()}
